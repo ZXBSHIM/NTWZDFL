@@ -24,7 +24,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 70px; /* 为底部导航留出空间 */
         }
         
         .container {
@@ -59,8 +58,8 @@
             margin-bottom: 10px;
         }
         
-        /* 桌面端导航样式 */
-        .desktop-nav {
+        /* 导航样式 */
+        nav {
             display: flex;
             justify-content: center;
             margin-bottom: 40px;
@@ -103,104 +102,17 @@
             left: 10%;
         }
         
-        /* 移动端底部导航样式 */
-        .mobile-bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #151515;
-            border-top: 1px solid #252525;
-            z-index: 1000;
-            padding: 12px 0;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-        }
-        
-        .mobile-nav-links {
-            display: flex;
-            list-style: none;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .mobile-nav-links a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 0.85rem;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            flex: 1;
-            text-align: center;
-            max-width: 25%;
-        }
-        
-        .mobile-nav-links a:hover,
-        .mobile-nav-links a.active {
-            color: #6a9eff;
-            background-color: rgba(106, 158, 255, 0.15);
-        }
-        
-        .mobile-nav-icon {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-        
         /* 主要内容区域 */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 300px;
             gap: 40px;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
         
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
-                margin-bottom: 20px;
-            }
-            
-            .desktop-nav {
-                display: none;
-            }
-            
-            .mobile-bottom-nav {
-                display: flex;
-            }
-            
-            header {
-                padding: 40px 0 20px;
-                margin-bottom: 20px;
-            }
-            
-            .site-title {
-                font-size: 2.2rem;
-            }
-            
-            body {
-                padding-bottom: 70px; /* 确保内容不被底部导航遮挡 */
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .mobile-nav-links a {
-                font-size: 0.75rem;
-                padding: 6px 8px;
-            }
-            
-            .mobile-nav-icon {
-                font-size: 1.1rem;
-            }
-            
-            body {
-                padding-bottom: 65px;
             }
         }
         
@@ -449,8 +361,7 @@
             <p class="tagline typewriter">那天我在等风来，刚好遇见一个女孩。等风来，不如追风去。</p>
         </header>
         
-        <!-- 桌面端导航 -->
-        <nav class="desktop-nav">
+        <nav>
             <ul class="nav-links">
                 <li><a href="#about">关于我</a></li>
                 <li><a href="#games">游戏世界</a></li>
@@ -580,28 +491,6 @@
             </div>
         </div>
         
-        <!-- 移动端底部导航 -->
-        <nav class="mobile-bottom-nav">
-            <ul class="mobile-nav-links">
-                <li><a href="#about">
-                    <span class="mobile-nav-icon">👤</span>
-                    <span>关于我</span>
-                </a></li>
-                <li><a href="#games">
-                    <span class="mobile-nav-icon">🎮</span>
-                    <span>游戏世界</span>
-                </a></li>
-                <li><a href="#interests">
-                    <span class="mobile-nav-icon">🌟</span>
-                    <span>兴趣爱好</span>
-                </a></li>
-                <li><a href="#contact">
-                    <span class="mobile-nav-icon">📞</span>
-                    <span>联系方式</span>
-                </a></li>
-            </ul>
-        </nav>
-        
         <!-- 游戏截图模态框 -->
         <div id="gameModal" class="modal">
             <div class="modal-content">
@@ -647,57 +536,6 @@
                 closeModal();
             }
         }
-        
-        // 移动端导航点击效果和平滑滚动
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
-            
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 移除所有active类
-                    mobileNavLinks.forEach(l => l.classList.remove('active'));
-                    // 给当前点击的链接添加active类
-                    this.classList.add('active');
-                    
-                    // 获取目标元素
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    // 平滑滚动到目标元素
-                    if (targetElement) {
-                        const offsetTop = targetElement.offsetTop - 20;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // 监听滚动，高亮当前所在区域
-            window.addEventListener('scroll', function() {
-                const sections = document.querySelectorAll('section');
-                const navLinks = document.querySelectorAll('.mobile-nav-links a');
-                
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    if (scrollY >= (sectionTop - 100)) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        });
     </script>
 </body>
 </html>
